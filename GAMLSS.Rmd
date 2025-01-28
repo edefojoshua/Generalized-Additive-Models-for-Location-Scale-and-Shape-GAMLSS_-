@@ -1,0 +1,66 @@
+---
+title: "Generalized Additive Models for Location, Scale, and Shape (GAMLSS)"
+author: "Joshua Edefo"
+date: "2025-01-28"
+email: "edefojoshua2000@yahoo.com"
+output: github_document
+---
+GAMLSS is a statistical framework that has great flexibility and power. Some benefits include flexibility in distribution, modelling resulting into multiple parameters, also works  well with non-linear relationships of variables and handles heterogeneity. However, it also comes with some disadvantages, such as complexity, interpretability and software availability 
+
+It is used to model the effect of number of seizures episodes (n_epil), medication adherence (adh), and number of medications taken (n_med) on quality of life (qol) of epilepsy patients
+
+
+Libraries
+```{r a, message=FALSE}
+library(gamlss)
+library(usethis)
+```
+
+Data and preparation of data
+
+
+```{r b}
+data <- read.csv("C:/Users/joe62/OneDrive - Aberystwyth University/Apps/Desktop/Destop Folder/R code/ep.csv")
+
+##Checking the structure
+str(data)
+summary(data)
+
+## Remove observations with missing values
+
+data = na.omit(data)
+
+```
+
+Fitting the GAMLSS model and model summary
+```{r c}
+model <- gamlss(
+  qol ~ n_epil + adh + n_med,
+  data = data,
+  family = BCT
+)
+
+summary(model)
+
+```
+
+Summary of results
+Mu (Location) Coefficients:
+  Intercept: 2.26117 (highly significant, p < 2e-16).
+n_epil: 0.28306 (highly significant, p < 6.28e-09).
+adh: -0.08966 (highly significant, p < 1.50e-05).
+n_med: 0.10813 (not significant, p = 0.265).
+Sigma (Scale) Coefficient:
+  Intercept: -1.20974 (highly significant, p < 2e-16).
+Nu (Shape) Coefficient:
+  Intercept: 0.05458 (not significant, p = 0.799).
+Tau (Shape) Coefficient:
+  Intercept: 34.19 (highly significant, p < 2e-16).
+  
+  
+  session information
+
+```{r d}
+sessionInfo()
+```
+
